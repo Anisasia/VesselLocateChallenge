@@ -1,2 +1,5 @@
 node_modules/
 .idea
+
+# api keys
+.env
