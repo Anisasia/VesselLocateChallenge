@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
-class SimpleMap extends Component {
+class Map extends Component {
   static defaultProps = {
     center: {
       lat: 59.95,
@@ -17,7 +17,6 @@ class SimpleMap extends Component {
 
   render() {
     return (
-      // Important! Always set the container height explicitly
       <Grid item xs={12} style={{ width: '100%', height: '100vh', position: 'absolute', left: '0', top: '0'}}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: GOOGLE_MAPS_API_KEY }}
@@ -35,4 +34,4 @@ class SimpleMap extends Component {
   }
 }
 
-export default SimpleMap;
+export default Map;
