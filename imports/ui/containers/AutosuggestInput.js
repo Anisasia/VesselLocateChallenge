@@ -7,6 +7,8 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 
+import { Vessels } from '../../api/vessels';
+
 const suggestions = [
   { label: 'Afghanistan' },
   { label: 'Aland Islands' },
@@ -91,20 +93,15 @@ function getSuggestionValue(suggestion) {
 function getSuggestions(value) {
   const inputValue = value.trim().toLowerCase();
   const inputLength = inputValue.length;
-  let count = 0;
 
-  return inputLength === 0
-    ? []
-    : suggestions.filter(suggestion => {
-      const keep =
-        count < 10 && suggestion.label.toLowerCase().slice(0, inputLength) === inputValue;
+  if (inputLength === 0){
+    return []
+  } else {
+    const searchPattern = new RegExp('.*' + inputValue + '.*', 'i')
 
-      if (keep) {
-        count += 1;
-      }
+    return Vessels.find({ Name: {$regex : searchPattern}}, {limit: 10}).fetch();
+  }
 
-      return keep;
-    });
 }
 
 const styles = theme => ({
