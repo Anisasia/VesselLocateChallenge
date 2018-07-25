@@ -1,5 +1,4 @@
-{
-  "vessels": [
+[
     {
       "Type": "Container ship",
       "Name": "EDITH MAERSK",
@@ -1017,4 +1016,3 @@
       "Length": "304x59m"
     }
   ]
-}
