@@ -1,12 +1,10 @@
 import { Meteor } from 'meteor/meteor'
-import { Mongo } from 'meteor/mongo'
 
 import seedVessels from './mockData/seedVessels'
+import {Vessels} from '../imports/api/vessels'
 
 Meteor.startup(() => {
-  const Vessels = new Mongo.Collection('vessels')
+  // initialize collection with fake data
   seedVessels.forEach(vessel => Vessels.insert(vessel))
-
-  // TODO: Continue here
-  console.log(Vessels.find().fetch()[0])
+  console.log('DONE!')
 })
