@@ -13,7 +13,8 @@ class App extends Component {
   }
 
   onTargetVesselSelect = (id) => {
-    // TODO: fetch coordinates from api and update state
+    Meteor.call('getVesselCoordinates', id)
+    // TODO: continue
   }
 
   render () {
