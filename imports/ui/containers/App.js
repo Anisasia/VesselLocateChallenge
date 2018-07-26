@@ -5,11 +5,22 @@ import InputCard from '../components/InputCard'
 import Map from './Map'
 
 class App extends Component {
+  state = {
+    mapCenter: {
+      lat: 59.95,
+      lng: 30.33
+    }
+  }
+
+  onTargetVesselSelect = (vessel) => {
+    // TODO: fetch coordinates from api and update state
+  }
+
   render () {
     return (
       <Grid container justify='center'>
-        <InputCard vessels={this.props.vessels} />
-        <Map />
+        <InputCard onTargetVesselSelect={this.onTargetVesselSelect} />
+        <Map mapCenter={this.state.mapCenter}/>
       </Grid>
     )
   }

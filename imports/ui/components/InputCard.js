@@ -8,7 +8,7 @@ const inputCard = (props) => {
   return (
     <Grid item xs={12} sm={8} md={6} lg={4} style={{zIndex: 500}}>
       <Paper style={{padding: '16px', marginTop: '16px'}}>
-        <AutosuggestInput vessels={props.vessels} />
+        <AutosuggestInput onTargetVesselSelect={props.onTargetVesselSelect} />
       </Paper>
     </Grid>
   )

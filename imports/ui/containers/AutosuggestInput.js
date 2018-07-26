@@ -31,7 +31,7 @@ function renderSuggestion(suggestion, { query, isHighlighted }) {
   const parts = parse(suggestion.Name, matches);
 
   return (
-    <MenuItem key={suggestion._id} selected={isHighlighted} component="div">
+    <MenuItem button key={suggestion._id} selected={isHighlighted} component="div">
       <div>
         {parts.map((part, index) => {
           return part.highlight ? (
@@ -108,6 +108,10 @@ class IntegrationAutosuggest extends React.Component {
     });
   };
 
+  onSuggestionSelected = (event, {suggestion}) => {
+    this.props.onTargetVesselSelect(suggestion)
+  }
+
   handleChange = (event, { newValue }) => {
     this.setState({
       value: newValue,
@@ -129,6 +133,7 @@ class IntegrationAutosuggest extends React.Component {
         suggestions={this.state.suggestions}
         onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
         onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
+        onSuggestionSelected={this.onSuggestionSelected}
         getSuggestionValue={getSuggestionValue}
         renderSuggestion={renderSuggestion}
         inputProps={{
