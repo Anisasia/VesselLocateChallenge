@@ -12,7 +12,7 @@ class App extends Component {
     }
   }
 
-  onTargetVesselSelect = (vessel) => {
+  onTargetVesselSelect = (id) => {
     // TODO: fetch coordinates from api and update state
   }
 

@@ -61,7 +61,7 @@ function getSuggestions(value) {
     return []
   } else {
     const searchPattern = new RegExp('.*' + inputValue + '.*', 'i')
-    const  vessels = Vessels.find({ Name: {$regex : searchPattern}}, {limit: 10}).fetch();
+    const  vessels = Vessels.find({Name: {$regex : searchPattern}}, {limit: 10, fields: {Name:1}}).fetch();
 
     return vessels.length > 0 ? vessels : [{_id: 'empty', Name: 'No matching vessels found!'}]
   }
@@ -109,7 +109,7 @@ class IntegrationAutosuggest extends React.Component {
   };
 
   onSuggestionSelected = (event, {suggestion}) => {
-    this.props.onTargetVesselSelect(suggestion)
+    this.props.onTargetVesselSelect(suggestion._id)
   }
 
   handleChange = (event, { newValue }) => {
