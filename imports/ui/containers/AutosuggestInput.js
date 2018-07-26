@@ -31,7 +31,7 @@ function renderSuggestion(suggestion, { query, isHighlighted }) {
   const parts = parse(suggestion.Name, matches);
 
   return (
-    <MenuItem selected={isHighlighted} component="div">
+    <MenuItem key={suggestion._id} selected={isHighlighted} component="div">
       <div>
         {parts.map((part, index) => {
           return part.highlight ? (
@@ -61,8 +61,9 @@ function getSuggestions(value) {
     return []
   } else {
     const searchPattern = new RegExp('.*' + inputValue + '.*', 'i')
+    const  vessels = Vessels.find({ Name: {$regex : searchPattern}}, {limit: 10}).fetch();
 
-    return Vessels.find({ Name: {$regex : searchPattern}}, {limit: 10}).fetch();
+    return vessels.length > 0 ? vessels : [{_id: 'empty', Name: 'No matching vessels found!'}]
   }
 
 }
