@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor'
-import axios from 'axios'
-
+import aprs from '../imports/api/aprs'
 import seedVessels from './mockData/seedVessels'
 import {Vessels} from '../imports/api/vessels'
+import {APRS_FI_API_KEY} from '../Keys'
 
 Meteor.startup(() => {
   // initialize collection with fake data
@@ -10,11 +10,18 @@ Meteor.startup(() => {
 })
 
 Meteor.methods({
-  getVesselCoordinates (vesselId) {
-    // TODO: continue
-    axios.get('https://api.aprs.fi/api/get?name=275304000&what=loc&apikey=109676.BrVSr9i6TpbMbBe&format=json')
-      .then(response => console.log(response.data))
+  async getVesselCoordinates (vesselId) {
+    const mmsi = Vessels.findOne({_id: vesselId}, {fields: {MMSI: 1}}).MMSI
 
-    return {lat: 55.95, lng: 30.33}
+    const response = await aprs.get('', {
+      params: {
+        name: mmsi, // use 275304000 to debug
+        what: 'loc',
+        apikey: APRS_FI_API_KEY,
+        format: 'json'
+      }
+    })
+
+    return response.data
   }
 })

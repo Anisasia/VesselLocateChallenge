@@ -12,10 +12,15 @@ class App extends Component {
     }
   }
 
-  onTargetVesselSelect = (id) => {
-    Meteor.call('getVesselCoordinates', id)
-    // TODO: continue
-  }
+  onTargetVesselSelect = (id) => Meteor.call('getVesselCoordinates',id , (e, r) => this.onDataFetched(e, r))
+
+  onDataFetched = (error, result) => {
+    if (error) {
+      console.log('error: ', error)
+    } else {
+      console.log('result: ', result)
+    }
+}
 
   render () {
     return (
