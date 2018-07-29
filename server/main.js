@@ -10,7 +10,7 @@ Meteor.startup(() => {
 })
 
 Meteor.methods({
-  async getVesselCoordinates (vesselId) {
+  async getVesselInfo (vesselId) {
     const mmsi = Vessels.findOne({_id: vesselId}, {fields: {MMSI: 1}}).MMSI
 
     const response = await aprs.get('', {
@@ -22,6 +22,17 @@ Meteor.methods({
       }
     })
 
-    return response.data
+    // TODO: some checks
+    const result = {
+      vessel: {
+        title: response.data.entries[0].name
+      },
+      coordinates: {
+        lat: Number(response.data.entries[0].lat),
+        lng: Number(response.data.entries[0].lng)
+      }
+    }
+
+    return result
   }
 })

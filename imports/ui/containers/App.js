@@ -6,19 +6,26 @@ import Map from './Map'
 
 class App extends Component {
   state = {
-    mapCenter: {
-      lat: 59.95,
-      lng: 30.33
+    mapCenter: { // Bellevue Downtown Park
+      lat: 47.612684,
+      lng: -122.204169
+    },
+    vessel: {
+      show: false,
+      title: ''
     }
   }
 
-  onTargetVesselSelect = (id) => Meteor.call('getVesselCoordinates',id , (e, r) => this.onDataFetched(e, r))
+  onTargetVesselSelect = (id) => Meteor.call('getVesselInfo',id , (e, r) => this.onDataFetched(e, r))
 
   onDataFetched = (error, result) => {
     if (error) {
       console.log('error: ', error)
     } else {
-      console.log('result: ', result)
+      this.setState({
+        mapCenter: result.coordinates,
+        vessel: {show: true, title: result.vessel.title}
+      })
     }
 }
 
@@ -26,7 +33,7 @@ class App extends Component {
     return (
       <Grid container justify='center'>
         <InputCard onTargetVesselSelect={this.onTargetVesselSelect} />
-        <Map mapCenter={this.state.mapCenter}/>
+        <Map mapCenter={this.state.mapCenter} vessel={this.state.vessel}/>
       </Grid>
     )
   }
