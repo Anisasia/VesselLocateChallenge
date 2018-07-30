@@ -7,8 +7,6 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 
-import { Vessels } from '../../api/vessels';
-
 function renderInput(inputProps) {
   const { classes, ref, ...other } = inputProps;
 
@@ -53,21 +51,6 @@ function getSuggestionValue(suggestion) {
   return suggestion.Name;
 }
 
-function getSuggestions(value) {
-  const inputValue = value.trim().toLowerCase();
-  const inputLength = inputValue.length;
-
-  if (inputLength === 0){
-    return []
-  } else {
-    const searchPattern = new RegExp('.*' + inputValue + '.*', 'i')
-    const  vessels = Vessels.find({Name: {$regex : searchPattern}}, {limit: 10, fields: {Name:1}}).fetch();
-
-    return vessels.length > 0 ? vessels : [{_id: 'empty', Name: 'No matching vessels found!'}]
-  }
-
-}
-
 const styles = theme => ({
   container: {
 
@@ -93,13 +76,42 @@ const styles = theme => ({
 class IntegrationAutosuggest extends React.Component {
   state = {
     value: '',
+    isLoading: false,
     suggestions: [],
   };
+  lastRequestId = null;
+
+  loadSuggestions(value) {
+    // Cancel the previous request
+    if (this.lastRequestId !== null) {
+      clearTimeout(this.lastRequestId);
+    }
+
+    this.setState({
+      isLoading: true
+    });
+
+    // Request
+    const inputValue = value.trim().toLowerCase();
+    const inputLength = inputValue.length;
+
+    if (inputLength === 0){
+      return []
+    } else {
+      this.lastRequestId = Meteor.call('suggestVessels', inputValue, (err, vessels) => {
+        if (err) {
+          console.log('error loading suggestions', err)
+        } else {
+         this.setState({
+           isLoading: false,
+           suggestions: vessels})
+        }
+      });
+    }
+  }
 
   handleSuggestionsFetchRequested = ({ value }) => {
-    this.setState({
-      suggestions: getSuggestions(value),
-    });
+    this.loadSuggestions(value)
   };
 
   handleSuggestionsClearRequested = () => {
