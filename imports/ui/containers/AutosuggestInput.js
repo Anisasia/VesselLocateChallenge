@@ -150,6 +150,7 @@ class IntegrationAutosuggest extends React.Component {
         renderSuggestion={renderSuggestion}
         inputProps={{
           classes,
+          type: 'search',
           placeholder: 'Enter a vessel name',
           value: this.state.value,
           onChange: this.handleChange,

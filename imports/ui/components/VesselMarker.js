@@ -11,15 +11,16 @@ const vesselMarker = (props) => {
     },
     icon: {
       flexGrow: 1,
-      width: '48px',
-      height: '48px'
+      width: '36px',
+      height: '36px'
     },
     title: {
       flexGrow: 1,
       width: '86px',
+      marginTop: '2px',
       textAlign: 'center',
       fontFamily: 'Roboto, sans-serif',
-      fontSize: 14,
+      fontSize: 12,
       fontWeight: 500,
       textShadow: '0px 1px 1px rgba(0, 0, 0, 0.5)'
     }
