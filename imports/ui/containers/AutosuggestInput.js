@@ -8,11 +8,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 
 function renderInput(inputProps) {
-  const { classes, ref, ...other } = inputProps;
+  const { classes, ref, errorState, errorHelper, ...other } = inputProps;
 
   return (
       <TextField
         fullWidth
+        error={errorState}
+        helperText={errorHelper}
         InputProps={{
           inputRef: ref,
           classes: {
@@ -75,6 +77,8 @@ const styles = theme => ({
 
 class IntegrationAutosuggest extends React.Component {
   state = {
+    errorState: false,
+    errorHelper: '',
     value: '',
     isLoading: false,
     suggestions: [],
@@ -93,21 +97,19 @@ class IntegrationAutosuggest extends React.Component {
 
     // Request
     const inputValue = value.trim().toLowerCase();
-    const inputLength = inputValue.length;
-
-    if (inputLength === 0){
-      return []
-    } else {
-      this.lastRequestId = Meteor.call('suggestVessels', inputValue, (err, vessels) => {
-        if (err) {
-          console.log('error loading suggestions', err)
-        } else {
-         this.setState({
-           isLoading: false,
-           suggestions: vessels})
+    this.lastRequestId = Meteor.call('suggestVessels', inputValue, (err, vessels) => {
+      if (err) {
+        console.log('error loading suggestions', err)
+      } else {
+        this.setState((prevState) => {
+          const showError = prevState.value.length > 0 && vessels.length <= 0
+          return {
+             errorState: showError,
+             errorHelper: showError ? 'No matching vessels found!' : '',
+             isLoading: false,
+             suggestions: vessels}})
         }
-      });
-    }
+    });
   }
 
   handleSuggestionsFetchRequested = ({ value }) => {
@@ -125,9 +127,13 @@ class IntegrationAutosuggest extends React.Component {
   }
 
   handleChange = (event, { newValue }) => {
-    this.setState({
-      value: newValue,
-    });
+    const clearError = newValue.length === 0;
+    this.setState(prevState => {
+      return {
+        value: newValue,
+        errorState: clearError ? false : prevState.errorState,
+        errorHelper: clearError ? '' : prevState.errorHelper
+      }});
   };
 
   render() {
@@ -150,6 +156,8 @@ class IntegrationAutosuggest extends React.Component {
         renderSuggestion={renderSuggestion}
         inputProps={{
           classes,
+          errorState: this.state.errorState,
+          errorHelper: this.state.errorHelper,
           type: 'search',
           placeholder: 'Enter a vessel name',
           value: this.state.value,
