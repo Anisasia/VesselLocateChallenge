@@ -10,7 +10,10 @@ export const Vessels = new Mongo.Collection('vessels')
 /**
  *  Initialization
  */
-seedVessels.forEach(vessel => Vessels.insert(vessel))
+if (Vessels.find().count() !== seedVessels.length) {
+  Vessels.remove({})
+  seedVessels.forEach(vessel => Vessels.insert(vessel))
+}
 
 /**
  *  Methods
