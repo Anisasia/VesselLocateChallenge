@@ -20,7 +20,8 @@ const vesselMarker = (props) => {
       textAlign: 'center',
       fontFamily: 'Roboto, sans-serif',
       fontSize: 14,
-      fontWeight: 500
+      fontWeight: 500,
+      textShadow: '0px 1px 2px rgba(0, 0, 0, 0.5)'
     }
   }
 
