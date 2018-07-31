@@ -1,8 +1,6 @@
 # Locate Vessel
 
-This is a test challenge for an interview.
-
-It is a meteor app for locating vessels using aprs.fi api and showing them on a map.
+A meteor app with React-based fronted for locating vessels using aprs.fi api and showing them on a map.
 
 ## How to run
 
