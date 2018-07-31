@@ -32,6 +32,9 @@ Meteor.methods({
     if (data.result === 'fail') {
       throw new Meteor.Error(data.code, data.description)
     }
+    if (data.found === 0) {
+      throw new Meteor.Error('position_not_found', 'Vessel last coordinates not found!')
+    }
 
     const result = {
       vessel: {
