@@ -1,5 +1,5 @@
 import React from 'react'
-import vessel from '../../assets/vessel.svg'
+import vessel from '../assets/vessel.svg'
 
 const vesselMarker = (props) => {
   const styles = {
